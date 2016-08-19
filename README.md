@@ -1,13 +1,13 @@
 # sense-FieldUI
 Bootstrap Radio, Checklist, Dropdown, and Buttons for a Dimension. Use icons for dimension values (buttons only) and use hidden variables (for changing chart dimensions dynamically)
 
-![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/preview.png)
-![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/button.png)
-![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/checkbox.png)
-![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/radio.png)
-![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/dropdown.png)
+![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/img/preview.png)
+![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/img/button.png)
+![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/img/checkbox.png)
+![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/img/radio.png)
+![Screenshot](https://raw.githubusercontent.com/balexbyrd/sense-FieldUI/master/img/dropdown.png)
 
-Uses Bootstrap, , Lodash, Awesome-bootstrap-checkbox and Font Awesome. In other words, you could say it's full of awesome.
+Uses Bootstrap, Lodash, Awesome-bootstrap-checkbox and Font Awesome. In other words, you could say it's full of awesome.
 
 ## Installation
 
@@ -31,6 +31,9 @@ MIT
 ## Credits
 
 > **Bootstrap** <http://getbootstrap.com/>
+
 > **Lodash** <https://lodash.com/>
+
 > **Font Awesome Icons** <http://fontawesome.io/icons/>
+
 > **Awesome-bootstrap-checkbox** <https://github.com/flatlogic/awesome-bootstrap-checkbox>
