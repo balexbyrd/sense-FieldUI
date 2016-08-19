@@ -1,0 +1,15 @@
+{
+	"name": "Field UI",
+	"description": "Manage how fields are viewed in the UI",
+	"icon": "list",
+	"type": "visualization",
+	"version": "1.0.0",
+	"preview": "preview.png",
+	"author": "Alex Byrd",
+	"keywords": "qlik-sense, extension, bootstrap, font-awesome, dropdown, checkbox, button, radio",
+	"license": "MIT",
+	"repository": "",
+	"dependencies": {
+		"qlik-sense": ">=1.0.x"
+	}	
+}
