@@ -405,7 +405,8 @@ function ( $, qlik, cssBoot, csscheckBox) {
 					if(row[0].qState==='S'){var checkedstatus ='checked'; }else{var checkedstatus ='';}
 					if(row[0].qState==='X'){var dis = 'disabled';}else{var dis = '';};
 					if(vars.oneSelected && row[0].qText === vars.dimSelected){elemNo = row[0].qElemNumber; };
-					html += '<div class="radio radio-'+btnColor+' radio-'+vars.ListType+' '+dis+'"><input type="radio" name='+vars.styletype+' id='+vars.id+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label class="inline control-label" >'+row[0].qText+'</label></div>';
+					
+					html += '<div class="radio radio-'+btnColor+' radio-'+vars.ListType+' '+dis+'"><input type="radio" name="'+n+'_'+styles+'" id='+n+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label class="inline control-label" >'+row[0].qText+'</label></div>';
 				});				
 			// Checkbox	
 			}else if(styles==='checkbox'){
@@ -414,7 +415,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 					if(row[0].qState==='X'){var dis = 'disabled';}else{var dis = '';};
 					if(vars.oneSelected && row[0].qText === vars.dimSelected){elemNo = row[0].qElemNumber; };
 					
-					html += '<div class="checkbox checkbox-'+btnColor+' checkbox-'+vars.ListType+' '+dis+'"><input class="styled" type="checkbox" name='+vars.styletype+' id='+vars.id+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label >'+row[0].qText+'</label></div>';
+					html += '<div class="checkbox checkbox-'+btnColor+' checkbox-'+vars.ListType+' '+dis+'"><input class="styled" type="checkbox" name='+vars.styletype+' id='+n+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label >'+row[0].qText+'</label></div>';
 				});			
 			// Dropdown	
 			}else if(styles==='dropdown'){
@@ -427,7 +428,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 						if(row[0].qState==='S'){var active ='lightgreen'; var actv = 'selected'}else{var active ='', actv = '';};
 						if(row[0].qState==='X'){var dis = 'disabled';}else{var dis = '';};
 						if(vars.oneSelected && row[0].qText === vars.dimSelected){elemNo = row[0].qElemNumber; };						
-						html += '<option  id='+vars.id+'_'+row[0].qElemNumber+' style="background-color: '+active+'" '+actv+' '+dis+'>'+row[0].qText+'</option>';
+						html += '<option  id='+n+'_'+row[0].qElemNumber+' style="background-color: '+active+'" '+actv+' '+dis+'>'+row[0].qText+'</option>';
 					});
 				html += '			</select>';				
 				html += '		</div>';
@@ -471,13 +472,14 @@ function ( $, qlik, cssBoot, csscheckBox) {
 			};
 			
 			// Radio or Checkbox
-			$('#'+vars.id+' .'+styles).on('click',function(d) {
+			$('#'+n+' .'+styles).on('click',function() {
 				
 				var lastChar,
 					id = this.firstChild.id,
-					lastChar = Number(id[id.length-1]),
+					lastChar = Number(id.split('_')[1]),
 					i = tempId[n].indexOf(lastChar),
-					s = $('#'+id).prop('checked');
+					s = $('#'+vars.id+' #'+id).prop('checked');
+				
 				if(styles === 'radio' || vars.oneSelected){		
 					tempId[n] = [lastChar];
 					vars.bool = false;
@@ -497,7 +499,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 			// Buttons
 			$('#'+vars.id+' button').on('click',function(d) {				
 				var id = d.target.id,
-					lastChar = Number(id[id.length-1]),
+					lastChar = Number(id.split('_')[1]),
 					i = tempId[n].indexOf(lastChar);				
 								
 				if(i>-1){					
@@ -514,7 +516,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 			//Dropdown
 			$('#'+vars.id+' .form-control').change(function(d) {				
 				var id = $(this).children(":selected").attr("id"),
-					lastChar = Number(id.slice(-1)),
+					lastChar = Number(id.split('_')[1]),
 					i = tempId[n].indexOf(lastChar);
 								
 				if(vars.dropMultiSelect){										
