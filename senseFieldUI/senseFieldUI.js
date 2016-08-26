@@ -318,6 +318,26 @@ function ( $, qlik, cssBoot, csscheckBox) {
 											if(!data.vars.Defaulthighlight){return data.vars.StyleOverride};
 										}
 									}
+								},	
+								checkboxStyle:{
+									ref: "vars.chbxStyle",
+									translation: "Checkbox Style",
+									type: "string",
+									defaultValue: " ",
+									component: "dropdown",
+									options: [ {
+											value: " ",
+											label: "Square (Default)"
+										}, {
+											value: "checkbox-circle",
+											label: "Circle"
+										}]
+									,
+									show : function(data) {
+										if(data.vars.StyleOverride === 'Checkbox' ){
+											return data.vars.StyleOverride;
+										}
+									}
 								},								
 								Defaulthighlight : {
 									ref : "vars.Defaulthighlight",
@@ -374,6 +394,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 					btnSize: layout.vars.btnSize,
 					btnSpan: layout.vars.btnSpan,
 					oneSelected: layout.vars.Defaulthighlight,
+					chbxStyle: layout.vars.chbxStyle,
 					dimSelected: layout.vars.Defaulthighlightvalue,
 					hiddenField: layout.vars.hiddenField,
 					dropMultiSelect: layout.vars.dropMultiSelect,
@@ -415,7 +436,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 					if(row[0].qState==='X'){var dis = 'disabled';}else{var dis = '';};
 					if(vars.oneSelected && row[0].qText === vars.dimSelected){elemNo = row[0].qElemNumber; };
 					
-					html += '<div class="checkbox checkbox-'+btnColor+' checkbox-'+vars.ListType+' '+dis+'"><input class="styled" type="checkbox" name='+vars.styletype+' id='+n+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label >'+row[0].qText+'</label></div>';
+					html += '<div class="checkbox '+vars.chbxStyle+' checkbox-'+btnColor+' checkbox-'+vars.ListType+' '+dis+'"><input class="styled" type="checkbox" id='+n+'_'+row[0].qElemNumber+' '+checkedstatus+' '+dis+'><label >'+row[0].qText+'</label></div>';
 				});			
 			// Dropdown	
 			}else if(styles==='dropdown'){
