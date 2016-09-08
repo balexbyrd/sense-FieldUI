@@ -367,6 +367,13 @@ function ( $, qlik, cssBoot, csscheckBox) {
 									show : function(data) {
 										return data.vars.Defaulthighlight;
 									}										
+								},
+								disableFullScreen: {
+									ref: "disableFullScreen",
+									type: "boolean",
+									component: "checkbox",
+									label: "Disable Full Screen Option (press F5 after change)",
+									defaultValue: false
 								}								
 							}							
 						}
@@ -400,6 +407,7 @@ function ( $, qlik, cssBoot, csscheckBox) {
 					dropMultiSelect: layout.vars.dropMultiSelect,
 					ListType: layout.vars.ListType,
 					styletype: layout.vars.StyleOverride,
+					disableFullScreen: layout.disableFullScreen,
 					this: this
 				},
 				$bootstrapStyle = $( document.createElement( 'div' ) ).attr( 'id', vars.id  ).addClass( 'bootstrap_inside' ),
@@ -563,7 +571,15 @@ function ( $, qlik, cssBoot, csscheckBox) {
 				if(vars.oneSelected){
 					app.field(vars.field[0]).selectMatch(vars.dimSelected, true);
 				};
-			});				
+			});
+
+			// switch Full Screen option
+			if (vars.disableFullScreen) {
+				// prevent multiple style elements
+				if ($('#senseFieldUI-fullScreen').length == 0) {
+					$("<style type='text/css' id='senseFieldUI-fullScreen'>.qv-object-senseFieldUI ~ .qv-object-nav .icon-zoom-in {display: none;}</style>").appendTo("head");
+				}
+			}			
 		
 		}
 	};
