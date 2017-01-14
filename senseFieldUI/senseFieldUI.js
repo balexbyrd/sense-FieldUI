@@ -10,7 +10,7 @@ define([
 
     function ($, qlik, cssBoot, csscheckBox) {
         'use strict';
-        var control = 0;
+        var control = {}; // support multiple instances
 
         if (!$("style[id='bootstrap']").length > 0) {
             $('<style id="bootstrap">').html(cssBoot).appendTo('head'); // Adding scoped bootstrap to head
@@ -389,9 +389,13 @@ define([
                         disableFullScreen: layout.disableFullScreen,
                         this: this
                     },
-                    $bootstrapStyle = $(document.createElement('div')).attr('id', vars.id).addClass('bootstrap_inside'),
+                    $bootstrapStyle = $(document.createElement('div')).attr('id', vars.id).addClass('bootstrap_inside form-group'),
                     elemNo;
-
+                
+                if (!control.hasOwnProperty(vars.id)) {
+                    control[vars.id] = 0;
+                }
+                
                 var n = vars.id,
                     styles = vars.styletype;
                 styles = styles.toLowerCase(), tempId[n] = [];
@@ -399,15 +403,15 @@ define([
                 vars.field.push(layout.qListObject.qDimensionInfo.qFallbackTitle);
                 vars.fieldSize.push(layout.qListObject.qDimensionInfo.qCardinal);
 
-                app.getList("CurrentSelections", function (reply) {
-                    if (reply.qSelectionObject.qSelections.length === 0) {
-                        if (!vars.oneSelected) {
-                            tempId[n] = [];
-                        } else if (!vars.hiddenField) {
-                            selectFirst(elemNo);
-                        };
-                    };
-                });
+//                app.getList("CurrentSelections", function (reply) {
+//                    if (reply.qSelectionObject.qSelections.length === 0) {
+//                        if (!vars.oneSelected) {
+//                            tempId[n] = [];
+//                        } else if (!vars.hiddenField && !(elemNo == undefined)) {
+//                            selectFirst(elemNo);
+//                        };
+//                    };
+//                });
 
                 // Radio
                 if (styles === 'radio') {
@@ -425,7 +429,7 @@ define([
                         if (vars.oneSelected && row[0].qText === vars.dimSelected) {
                             elemNo = row[0].qElemNumber;
                         };
-                        html += '<div class="radio radio-' + btnColor + ' radio-' + vars.ListType + ' ' + dis + '"><input type="radio" name=' + vars.styletype + ' id=' + vars.id + '_' + row[0].qElemNumber + ' ' + checkedstatus + ' ' + dis + '><label class="inline control-label" >' + row[0].qText + '</label></div>';
+                        html += '<div class="radio radio-' + vars.btnColor + ' radio-' + vars.ListType + ' ' + dis + '"><input type="radio" name=' + vars.styletype + ' id=' + vars.id + '_' + row[0].qElemNumber + ' ' + checkedstatus + ' ' + dis + '><label class="inline control-label" >' + row[0].qText + '</label></div>';
                     });
                     // Checkbox	
                 } else if (styles === 'checkbox') {
@@ -444,7 +448,7 @@ define([
                             elemNo = row[0].qElemNumber;
                         };
 
-                        html += '<div class="checkbox checkbox-' + btnColor + ' checkbox-' + vars.ListType + ' ' + dis + '"><input class="styled" type="checkbox" name=' + vars.styletype + ' id=' + vars.id + '_' + row[0].qElemNumber + ' ' + checkedstatus + ' ' + dis + '><label >' + row[0].qText + '</label></div>';
+                        html += '<div class="checkbox checkbox-' + vars.btnColor + ' checkbox-' + vars.ListType + ' ' + dis + '"><input class="styled" type="checkbox" name=' + vars.styletype + ' id=' + vars.id + '_' + row[0].qElemNumber + ' ' + checkedstatus + ' ' + dis + '><label >' + row[0].qText + '</label></div>';
                     });
                     // Dropdown	
                 } else if (styles === 'dropdown') {
@@ -493,7 +497,7 @@ define([
                     html += '<div class="btn-group" ' + spn + '>'
                     this.backendApi.eachDataRow(function (rownum, row) {
                         if (row[0].qState === 'S') {
-                            var active = 'btn-' + btnColor;
+                            var active = 'btn-' + vars.btnColor;
                             tempId[n].push(row[0].qElemNumber);
                         } else {
                             var active = 'btn-default';
@@ -522,12 +526,13 @@ define([
                     html += '</div>';
                 };
                 $bootstrapStyle.html(html);
-                $element.html($bootstrapStyle);
+                var form = $('<form />').append($bootstrapStyle);
+                $element.html(form);
 
-                if (vars.oneSelected && control === 0) {
+                if (vars.oneSelected && control[vars.id] === 0) {
                     tempId[n] = [];
                     selectFirst(elemNo);
-                    control++
+                    control[vars.id]++;
                 };
 
                 function selectFirst(dim) {
@@ -614,7 +619,8 @@ define([
                 });
 
                 // Clear Selections
-                $('#clearselections').on('click', function () {
+                $('#clearselections').off('click.senseFieldUI-'+vars.id).on('click.senseFieldUI-'+vars.id, function () {
+                    control[vars.id] = 0;
                     tempId[n] = [];
                     if (vars.oneSelected) {
                         app.field(vars.field[0]).selectMatch(vars.dimSelected, true);
@@ -625,7 +631,7 @@ define([
                 if (vars.disableFullScreen) {
                     // prevent multiple style elements
                     if ($('#senseFieldUI-fullScreen').length == 0) {
-                        $("<style type='text/css' id='senseFieldUI-fullScreen'>.qv-object-senseFieldUI ~ .qv-object-nav .icon-zoom-in {display: none;}</style>").appendTo("head");
+                        $('<style type="text/css" id="senseFieldUI-fullScreen">.qv-object-senseFieldUI .qv-object-nav a {display: none;}</style>').appendTo("head");
                     }
                 }
             }
