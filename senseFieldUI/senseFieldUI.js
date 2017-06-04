@@ -2,7 +2,7 @@ var tempId = [];
 
 define([
         "jquery",
-        "qlik",
+        "js/qlik",
         "text!./css/scoped-bootstrap.css",
         "text!./css/awesome-bootstrap-checkbox.css",
         "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.js"
@@ -16,12 +16,13 @@ define([
             if (!$("link[id='bootstrap']").length > 0) {
                 $('<style id="bootstrap">').html(cssBoot).appendTo('head'); // Adding scoped bootstrap to head
                 $('<style>').html(csscheckBox).appendTo('head'); // Adding checkbox styles to head
-                $('<script type="text/javascript" extension="senseFieldUI" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">').appendTo('body'); // Bootstrap.js CDN
+                $('<script type="text/javascript" extension="senseFieldUI" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">').appendTo('body'); // Bootstrap.js CDN
             }
         };
 
         if (!$("link[id='FA']").length > 0) {
-            $('<link id="FA" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">').appendTo('head'); // Font Awesome CDN		
+            $('<link id="FA" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">').appendTo('head'); // Font Awesome CDN
+            $('<link id="bootstrapSelect" rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">').appendTo('head'); // Font Awesome CDN		
         };
 
         return {
@@ -319,6 +320,17 @@ define([
                                             }
                                         }
                                     },
+                                    dropMultiSelectSize: {
+                                        ref: "vars.dropMultiSelectSize",
+                                        translation: "Multiple Select box size",
+                                        type: "integer",
+                                        defaultValue: 7,
+                                        show: function(data) {
+                                            if (data.vars.dropMultiSelect === true) {
+                                                return true;
+                                            }
+                                        }
+                                    },
                                     checkboxStyle: {
                                         ref: "vars.chbxStyle",
                                         translation: "Checkbox Style",
@@ -406,6 +418,7 @@ define([
                         ListType: layout.vars.ListType,
                         styletype: layout.vars.StyleOverride,
                         disableFullScreen: layout.disableFullScreen,
+                        mSize: layout.vars.dropMultiSelectSize,
                         this: this
                     },
                     $bootstrapStyle = $(document.createElement('div')).attr('id', vars.id).addClass('bootstrap_inside form-group'),
@@ -442,11 +455,13 @@ define([
                     });
                     // Dropdown	
                 } else if (styles === 'dropdown') {
-                    if (vars.dropMultiSelect) { vars.dropDownStyle = 'multiple' } else { vars.dropDownStyle = '' };
+
+                    if (vars.dropMultiSelect) { vars.dropDownStyle = 'multiple size="' + vars.mSize + '"' } else { vars.dropDownStyle = '' };
                     html += '<row>'
                     html += '	<div class="col-md-12">';
                     html += '		<div class="form-group">';
                     html += '			<select ' + vars.dropDownStyle + ' class="form-control">';
+                    html += '			    <option selected disabled>Nothing selected</option>';
                     this.backendApi.eachDataRow(function(rownum, row) {
                         if (row[0].qState === 'S') { var active = 'lightgreen'; var actv = 'selected' } else {
                             var active = '',
@@ -548,8 +563,6 @@ define([
                     if (vars.oneSelected) { tempId[n] = [lastChar]; };
                     tempId[n] = _.uniq(tempId[n]);
 
-                    //console.info(styles,i, tempId[n],lastChar, id, vars.oneSelected);
-
                     if (!vars.oneSelected) {
                         vars.this.backendApi.selectValues(0, tempId[n], false);
                     } else {
@@ -582,6 +595,7 @@ define([
                             tempId[n] = [lastChar];
                             vars.bool = false
                         } else { vars.bool = true };
+
                         tempId[n] = _.uniq(tempId[n]);
                         vars.this.backendApi.selectValues(0, tempId[n], vars.bool);
                     };
