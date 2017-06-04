@@ -22,7 +22,6 @@ define([
 
         if (!$("link[id='FA']").length > 0) {
             $('<link id="FA" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">').appendTo('head'); // Font Awesome CDN
-            $('<link id="bootstrapSelect" rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">').appendTo('head'); // Font Awesome CDN		
         };
 
         return {
