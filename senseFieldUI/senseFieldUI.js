@@ -479,7 +479,7 @@ define([
                 } else {
                     var rw = 0;
                     if (vars.btnSpan) {
-                        var spn = 'style="width: 100%; white-space: normal;"',
+                        var spn = 'style="display: flex; "',
                             spnBtn = 'style="width: ' + 100 / vars.fieldSize + '%; white-space: normal;"'
                     } else {
                         var spn = '',
