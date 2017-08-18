@@ -252,7 +252,6 @@ define([
                                     btnSize: {
                                         ref: "vars.btnSize",
                                         expression: "optional",
-                                        translation: "Selection Color:",
                                         translation: "Button Size:",
                                         type: "string",
                                         defaultValue: "btn-md",
@@ -438,7 +437,6 @@ define([
                 // Radio
                 if (styles === 'radio') {
                     this.backendApi.eachDataRow(function(rownum, row) {
-                        if (row[0].qState === 'S') { var checkedstatus = 'checked'; } else { var checkedstatus = ''; }
                         if (row[0].qState === 'S') { var checkedstatus = 'checked'; } else { var checkedstatus = ''; };
                         if (row[0].qState === 'X') { var dis = 'disabled'; } else { var dis = ''; };
                         if (vars.oneSelected && row[0].qText === vars.dimSelected) { elemNo = row[0].qElemNumber; };
