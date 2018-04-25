@@ -1,3 +1,11 @@
+.qv-object-senseFieldUI .qv-object-header {
+    padding-bottom: 0 !important;
+}
+
+.qv-object-senseFieldUI .qv-object-header.thin {
+    height: calc(28px - 1.25em) !important;
+}
+
 .bootstrap_inside {
     /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
