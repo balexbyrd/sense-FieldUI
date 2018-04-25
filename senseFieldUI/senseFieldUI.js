@@ -504,10 +504,28 @@ define([
                 $bootstrapStyle.html(html);
                 $element.html($bootstrapStyle);
 
-                if (vars.oneSelected && control[vars.id] === 0) { //
+                // Always One Selected Value
+                if (vars.oneSelected && control[vars.id] === 0) {
+                    app.getList("CurrentSelections", function(reply) {
+                        var s = reply.qSelectionObject.qSelections;
+                        var dims = [];
+                        if (s.length > 0) {
+                            s.forEach(function(fld) {
+                                dims.push(fld.qField);
+                            })
+                        } else {
+                            selectFirst(elemNo);
+                        }
+                        var found = dims.join(',').indexOf(vars.field[0]) > -1;
+                        if (!found) {
+                            selectFirst(elemNo);
+                        }
+                    })
+
+
                     tempId[n] = [];
                     control[vars.id]++;
-                    selectFirst(elemNo);
+                    //selectFirst(elemNo);
                 };
 
                 function selectFirst(dim) {
@@ -542,7 +560,6 @@ define([
                     } else {
                         if (vars.dimSelected !== $(this)[0].textContent) {
                             vars.this.backendApi.selectValues(0, tempId[n], vars.bool);
-
                         }
                     }
                 });
@@ -575,7 +592,7 @@ define([
 
                 });
 
-                //Dropdown
+                // Dropdown
                 $('#' + vars.id + ' .form-control').change(function(d) {
                     var id = $(this).children(":selected").attr("id"),
                         lastChar = Number(id.split('_')[1]),
@@ -583,7 +600,8 @@ define([
 
                     if (vars.dropMultiSelect) {
                         var dm = $('.form-control').val();
-                        app.field(vars.field[0]).selectValues(dm, true);
+                        app.field(vars.field[0]).selectMatch(dm, false);
+                        //app.field(vars.field[0]).selectValues(dm, true);
                     } else {
                         if (i > -1) {
                             tempId[n].splice(i, 1);
@@ -600,16 +618,16 @@ define([
                     };
                 });
 
-                // Clear Selections
+                // On Clear Selections
                 $('#clearselections').off('click.senseFieldUI-' + vars.id).on('click.senseFieldUI-' + vars.id, function() {
                     control[vars.id] = 0;
                     tempId[n] = [];
                     if (vars.oneSelected) {
-                        app.field(vars.field[0]).selectMatch(vars.dimSelected, true);
+                        app.field(vars.field[0]).selectMatch(vars.dimSelected, false);
                     };
                 });
 
-                // switch Full Screen option
+                // Switch Full Screen option
                 if (vars.disableFullScreen) {
                     if ($('#senseFieldUI-fullScreen').length == 0) {
                         $('<style type="text/css" id="senseFieldUI-fullScreen">.qv-object-senseFieldUI .qv-object-nav a {display: none;}</style>').appendTo("head");
