@@ -39,6 +39,8 @@ $RECYCLE.BIN/
 .Trashes
 .VolumeIcon.icns
 .vscode
+.gitignore
+.gitattributes
 
 # Directories potentially created on remote AFP share
 .AppleDB

@@ -2,7 +2,7 @@ var tempId = [];
 
 define([
         "jquery",
-        "js/qlik",
+        "qlik",
         "text!./css/scoped-bootstrap.css",
         "text!./css/awesome-bootstrap-checkbox.css",
         "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.js"
